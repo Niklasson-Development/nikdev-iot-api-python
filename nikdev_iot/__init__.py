@@ -1,3 +1,3 @@
-from api import *
-from config import *
-import objects
+# -*- coding: utf-8 -*-
+
+from api import Api
