@@ -1,6 +1,8 @@
-import time
+# -*- coding: utf-8 -*-
 
-from value import Value
+import time
+from . import Value
+
 
 class Entry:
 
@@ -19,13 +21,13 @@ class Entry:
 
     def __init__(self, timestamp=None, values=None):
         """
+        Creates an Entry object that can store values and timestamp of data to be uploaded.
 
-
-        :param timestamp:
-        :param values:
+        :param int timestamp:       The timestamp to be set to the server. If empty, set from the current client time.
+        :param list[Value] values:  A list of values to be sent to the server.
         """
-        self.timestamp  = timestamp if timestamp    else int(time.time())
-        self.values     = values    if values       else []
+        self.timestamp = timestamp if timestamp else int(time.time())
+        self.values = values if values  else []
 
     def to_object(self):
         """
@@ -39,8 +41,3 @@ class Entry:
         for value in self.values:
             _values.append(value.to_object())
         return {'timestamp': self.timestamp, 'values': _values}
-
-    def __getitem__(self, item):
-        print 'wow'
-
-    def test(self, wow=None):
