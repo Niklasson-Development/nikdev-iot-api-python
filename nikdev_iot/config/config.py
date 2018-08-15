@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 class Config:
     """
     Configuration class that stores values for the API.
@@ -12,9 +13,8 @@ class Config:
         "baseUrl": "https://www.nik-dev.se/api/v1/",
         "deviceId": None,
         "apiKey": None,
-        "stageDataOnFail": True,
-        #"restoreOnInitialize": False,
-        #"useLocalOptimization": False
+        #"stageUncommittedValues": False,
+        #"stageUnpushedEntries": False,
     }
     """ Dict with default configuration values. """
 

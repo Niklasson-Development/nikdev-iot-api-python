@@ -6,7 +6,7 @@ from . import Entry
 
 class Batch:
     """
-    Batch object that contais the current client timestamp and all entries to be sent to the server.
+    Batch object that contains the current client timestamp and all entries to be sent to the server.
     """
 
     timestamp = None
@@ -31,9 +31,9 @@ class Batch:
         :param list[Value] entries: A list of entries to be sent to the server.
         """
         self.timestamp = timestamp if timestamp else int(time.time())
-        self.entries = entries if entries  else []
+        self.entries = entries if entries else []
 
-    def to_object(self):
+    def to_object_upstream(self):
         """
         Converts the object to a dict that can be sent to the server.
 
@@ -43,7 +43,7 @@ class Batch:
         # Serialize all the values before returning the entry.
         serialized_entries = []
         for entry in self.entries:
-            serialized_entries.append(entry.to_object())
+            serialized_entries.append(entry.to_object_upstream())
         return {
             'timestamp': self.timestamp,
             'entries': serialized_entries

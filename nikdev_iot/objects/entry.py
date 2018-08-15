@@ -27,9 +27,22 @@ class Entry:
         :param list[Value] values:  A list of values to be sent to the server.
         """
         self.timestamp = timestamp if timestamp else int(time.time())
-        self.values = values if values  else []
+        self.values = values if values else []
 
-    def to_object(self):
+    def to_object_downstream(self):
+        """
+        Converts the object to a dict that represents what was fetched from the server.
+
+        :return:    A represented dict that matches the server structure.
+        :rtype:     dict[int, list[Value]]
+        """
+        # Serialize all the values before returning the entry.
+        _values = []
+        for value in self.values:
+            _values.append(value.to_object_downstream())
+        return {'timestamp': self.timestamp, 'values': _values}
+
+    def to_object_upstream(self):
         """
         Converts the object to a dict that can be sent to the server.
 
@@ -39,5 +52,5 @@ class Entry:
         # Serialize all the values before returning the entry.
         _values = []
         for value in self.values:
-            _values.append(value.to_object())
+            _values.append(value.to_object_upstream())
         return {'timestamp': self.timestamp, 'values': _values}
