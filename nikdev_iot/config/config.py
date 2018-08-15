@@ -13,7 +13,8 @@ class Config:
         "deviceId": None,
         "apiKey": None,
         "stageDataOnFail": True,
-        "useLocalOptimization": False
+        #"restoreOnInitialize": False,
+        #"useLocalOptimization": False
     }
     """ Dict with default configuration values. """
 
