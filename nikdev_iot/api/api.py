@@ -142,7 +142,6 @@ class _UpstreamApi(_BaseApi):
         Deletes all entries that haven't been pushed.
         """
         self.entries = []
-        raise NotImplemented
 
 
 class _DownstreamApi(_UpstreamApi):
