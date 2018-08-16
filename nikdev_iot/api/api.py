@@ -133,6 +133,15 @@ class _UpstreamApi(_BaseApi):
         elif status == NetworkStatus.BAD_LUCK:
             raise ApiException('Bad luck: client timeout or unexpected server error.')
 
+    def commit_and_push(self):
+        """
+        Merged function of commit and push.
+
+        :rtype: None
+        """
+        self.commit()
+        self.push()
+
     def reset(self):
         """
         Deletes all uncommitted values.
