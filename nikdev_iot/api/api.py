@@ -110,8 +110,39 @@ class _UpstreamApi(_BaseApi):
         self.reset()
 
     def push(self):
+        """
+        Takes the commited entries and send them to the server.
+        """
         client_timestamp = int(time.time())
-        self.network.post(url='', json_data=self.entries)
+        batch = Batch(timestamp=client_timestamp, entries=self.entries)
+
+        status, response = self.network.post(
+            url=self.config.get_value('baseUrl') + 'entries/',
+            json=batch.to_object_upstream()
+        )
+
+        if status == NetworkStatus.SUCCESS:
+            self.reset_unpushed_entries()
+        elif status == NetworkStatus.BAD_REQUEST:
+            self.reset_unpushed_entries()
+            try:
+                error_message = response.json()['message']
+            except ValueError:
+                error_message = str(response.status_code)
+            raise ApiException('Bad request: ' + error_message)
+        elif status == NetworkStatus.BAD_LUCK:
+            raise ApiException('Bad luck: client timeout or unexpected server error.')
+
+    def reset(self):
+        """
+        Deletes all uncommitted values.
+        """
+        self.values = []
+
+    def reset_unpushed_entries(self):
+        """
+        Deletes all entries that haven't been pushed.
+        """
         self.entries = []
         raise NotImplemented
 
