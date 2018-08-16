@@ -109,7 +109,9 @@ class _UpstreamApi(_BaseApi):
 
     def push(self):
         """
-        Takes the commited entries and send them to the server.
+        Takes the committed entries and send them to the server.
+
+        :rtype: None
         """
         client_timestamp = int(time.time())
         batch = Batch(timestamp=client_timestamp, entries=self.entries)
