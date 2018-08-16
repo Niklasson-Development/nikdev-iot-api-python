@@ -15,6 +15,8 @@ class Config:
         "apiKey": None,
         #"stageUncommittedValues": False,
         #"stageUnpushedEntries": False,
+
+        "requestTimeout": 10,
     }
     """ Dict with default configuration values. """
 
