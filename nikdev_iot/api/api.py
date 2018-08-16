@@ -4,8 +4,11 @@ import atexit
 import time
 
 from nikdev_iot.config import Config
-from nikdev_iot.objects import Value, Entry
+from nikdev_iot.network.network import NetworkStatus
+from nikdev_iot.objects import Value, Entry, Batch
 from nikdev_iot.network import Network
+
+from .api_exception import ApiException
 
 
 class _BaseApi(object):
@@ -28,7 +31,7 @@ class _BaseApi(object):
         """
         # Store the config locally
         self.config = Config(config)
-        self.network = Network(config)
+        self.network = Network(self.config)
 
     @classmethod
     def from_credentials(cls, device_id, api_key):
