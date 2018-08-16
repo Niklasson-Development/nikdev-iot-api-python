@@ -8,7 +8,7 @@ from nikdev_iot.network.network import NetworkStatus
 from nikdev_iot.objects import Value, Entry, Batch
 from nikdev_iot.network import Network
 
-from .api_exception import ApiException
+from .push_exception import PushException
 
 
 class _BaseApi(object):
@@ -129,9 +129,9 @@ class _UpstreamApi(_BaseApi):
                 error_message = response.json()['message']
             except ValueError:
                 error_message = str(response.status_code)
-            raise ApiException('Bad request: ' + error_message)
+            raise PushException('Bad request: ' + error_message)
         elif status == NetworkStatus.BAD_LUCK:
-            raise ApiException('Bad luck: client timeout or unexpected server error.')
+            raise PushException('Bad luck: client timeout or unexpected server error.')
 
     def commit_and_push(self):
         """
