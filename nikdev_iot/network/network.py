@@ -12,7 +12,7 @@ class Network:
     config = None
     """
     The configuration object for the network class.
-    
+
     :type: Config
     """
 
