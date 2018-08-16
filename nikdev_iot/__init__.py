@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 
-from api import Api
+from api import Api, ApiException
