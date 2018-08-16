@@ -7,7 +7,9 @@ class Config:
     """
 
     _config_custom = {}
-    """ Dict with custom configuration values, overrides the _config_default values. """
+    """
+    Dict with custom configuration values, overrides the _config_default values.
+    """
 
     _config_default = {
         "baseUrl": "https://iot.nik-dev.se/api/v1/",
@@ -18,7 +20,9 @@ class Config:
 
         "requestTimeout": 10,
     }
-    """ Dict with default configuration values. """
+    """
+    Dict with default configuration values.
+    """
 
     def __init__(self, config_custom=None):
         # If the custom path is set, read it
