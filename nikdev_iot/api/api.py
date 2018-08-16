@@ -157,30 +157,38 @@ class _StorageApi(_DownstreamApi):
 
         if self.config.get_value('stageUncommittedValues', False):
             # Register destructor, to make sure uncommitted values won't be lost
-            atexit.register(self._stage_values)
+            atexit.register(self.stage_values)
             self._restore_values()
 
         if self.config.get_value('stageUnpushedEntries', False):
             # Register destructor, to make sure unpushed entries won't be lost
-            atexit.register(self._stage_entries)
+            atexit.register(self.stage_entries)
             self._restore_entries()
 
-    def _stage_values(self, values):
+    def stage_values(self):
         # TODO: Implement catch to store uncommitted values
+        raise NotImplemented
         pass
 
-    def _stage_entries(self, entries):
+    def stage_entries(self):
         # TODO: Implement catch to store unpushed entries
+        raise NotImplemented
         pass
 
     def _restore_values(self):
         # TODO: Implement function to restore uncommitted values
+        raise NotImplemented
         pass
 
     def _restore_entries(self):
         # TODO: Implement function to restore unpushed entries
+        raise NotImplemented
         pass
 
 
+# class Api(_StorageApi):  # Bypass the storage api for now since no function is ready.
 class Api(_DownstreamApi):
+    """
+    Endpoint and wrapper for sending and receiving data from the NikDev IoT Server.
+    """
     pass
