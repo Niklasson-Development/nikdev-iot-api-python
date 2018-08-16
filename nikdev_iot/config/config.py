@@ -10,7 +10,7 @@ class Config:
     """ Dict with custom configuration values, overrides the _config_default values. """
 
     _config_default = {
-        "baseUrl": "https://www.nik-dev.se/api/v1/",
+        "baseUrl": "https://iot.nik-dev.se/api/v1/",
         "deviceId": None,
         "apiKey": None,
         #"stageUncommittedValues": False,
