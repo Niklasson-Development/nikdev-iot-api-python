@@ -93,13 +93,11 @@ class _UpstreamApi(_BaseApi):
 
         return new_value_object
 
-    def reset(self):
-        """
-        Deletes all uncommitted values.
-        """
-        self.values = []
-
     def commit(self):
+        """
+        Stores the added values to an entry that can be sent to the server.
+        This step must be done before pushing.
+        """
         # Get the current timestamp
         commit_timestamp = int(time.time())
         # Create a new entry, and pass the values by value (instead of by reference)
