@@ -79,7 +79,7 @@ class _UpstreamApi(_BaseApi):
         # Create the value object
         new_value_object = Value(field_id, value)
         # Iterate over all added values
-        for idx, old_value_object in self.values:
+        for idx, old_value_object in enumerate(self.values):
             # Check if the new value has already been set previously.
             if old_value_object == new_value_object:
                 # If so, update it instead.
