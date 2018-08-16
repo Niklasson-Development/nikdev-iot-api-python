@@ -33,6 +33,22 @@ class Batch:
         self.timestamp = timestamp if timestamp else int(time.time())
         self.entries = entries if entries else []
 
+    def to_object_downstream(self):
+        """
+        Converts the object to a dict that looks like the server.
+
+        :return:    A represented dict that matches the structure from the server.
+        :rtype:     dict[int, list[Entry]]
+        """
+        # Serialize all the values before returning the entry.
+        serialized_entries = []
+        for entry in self.entries:
+            serialized_entries.append(entry.to_object_downstream())
+        return {
+            'serverTimestamp': self.timestamp,
+            'entries': serialized_entries
+        }
+
     def to_object_upstream(self):
         """
         Converts the object to a dict that can be sent to the server.
@@ -45,6 +61,6 @@ class Batch:
         for entry in self.entries:
             serialized_entries.append(entry.to_object_upstream())
         return {
-            'timestamp': self.timestamp,
+            'clientTimestamp': self.timestamp,
             'entries': serialized_entries
         }
