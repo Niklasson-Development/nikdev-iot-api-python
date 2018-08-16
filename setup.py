@@ -11,6 +11,6 @@ setup(name='nikdev_iot',
       license='MIT',
       packages=['nikdev_iot'],
       install_requires=[
-          'requests>=2.19,<2.20',
+          'requests>=2.19,<3',
       ],
       zip_safe=False)
