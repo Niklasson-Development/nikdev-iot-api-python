@@ -31,11 +31,8 @@ class Network:
         :rtype: dict[str, str]
         """
         return {
-            # TODO: Fix the headers on the server to match these, then replace these.
-            # 'x-device-id': self.config.get_value('deviceId'),
-            # 'x-api-key': self.config.get_value('apiKey')
-            'x-device': self.config.get_value('deviceId'),
-            'x-token': self.config.get_value('apiKey'),
+            'x-device-id': self.config.get_value('deviceId'),
+            'x-api-key': self.config.get_value('apiKey')
         }
 
     def get_timeout(self):
