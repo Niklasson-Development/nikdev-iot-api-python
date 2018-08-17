@@ -129,9 +129,9 @@ class _UpstreamApi(_BaseApi):
                 error_message = response.json()['message']
             except ValueError:
                 error_message = str(response.status_code)
-            raise PushException('Bad request: ' + error_message)
+            raise PushException('Bad request: ' + error_message, False)
         elif status == NetworkStatus.BAD_LUCK:
-            raise PushException('Bad luck: client timeout or unexpected server error.')
+            raise PushException('Bad luck: client timeout or unexpected server error.', True)
 
     def commit_and_push(self):
         """
