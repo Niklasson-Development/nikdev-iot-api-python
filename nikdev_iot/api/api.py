@@ -158,7 +158,7 @@ class _UpstreamApi(_BaseApi):
 class _DownstreamApi(_UpstreamApi):
 
     def get(self, field_ids=None):
-        raise NotImplemented
+        raise NotImplementedError
 
 
 class _StorageApi(_DownstreamApi):
@@ -178,27 +178,27 @@ class _StorageApi(_DownstreamApi):
 
     def stage_values(self):
         # TODO: Implement catch to store uncommitted values
-        raise NotImplemented
+        raise NotImplementedError
         pass
 
     def stage_entries(self):
         # TODO: Implement catch to store unpushed entries
-        raise NotImplemented
+        raise NotImplementedError
         pass
 
     def _restore_values(self):
         # TODO: Implement function to restore uncommitted values
-        raise NotImplemented
+        raise NotImplementedError
         pass
 
     def _restore_entries(self):
         # TODO: Implement function to restore unpushed entries
-        raise NotImplemented
+        raise NotImplementedError
         pass
 
 
 # class Api(_StorageApi):  # Bypass the storage api for now since no function is ready.
-class Api(_DownstreamApi):
+class Api(_StorageApi):
     """
     Endpoint and wrapper for sending and receiving data from the NikDev IoT Server.
     """
