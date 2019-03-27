@@ -15,8 +15,10 @@ class Config:
         "baseUrl": "https://iot.nik-dev.se/api/v1/",
         "deviceId": None,
         "apiKey": None,
-        #"stageUncommittedValues": False,
-        #"stageUnpushedEntries": False,
+        "storagePath": "",
+        "storageFilename": "iot_storage.db",
+        "stageUncommittedValues": True,
+        "stageUnpushedEntries": True,
 
         "requestTimeout": 10,
     }

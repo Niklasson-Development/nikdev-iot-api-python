@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import atexit
+import os
 import time
+import shelve
 
 from nikdev_iot.config import Config
 from nikdev_iot.network.network import NetworkStatus
@@ -51,11 +53,11 @@ class _BaseApi(object):
 
 class _UpstreamApi(_BaseApi):
 
-    values = []
+    values = []  # type: List[Any]
     """
     Stores added values that hasn't been committed yet.
     
-    :type: list[object]
+    :type: list[Value]
     """
 
     entries = []
@@ -163,38 +165,95 @@ class _DownstreamApi(_UpstreamApi):
 
 class _StorageApi(_DownstreamApi):
 
+    __STORAGE_VERSION = "1.0.0"
+    """
+    The version of the storage handler. May differ between API versions, but not necessarily.
+    Is only used to handle migrations.
+    
+    :type: str
+    """
+
+    storage = shelve
+    """
+    The storage wrapper that keeps uncommitted data.
+    
+    :type: shelve.DbfilenameShelf
+    """
+
     def __init__(self, config=None):
         super(_StorageApi, self).__init__(config)
 
+        # Check if any staging functionality is used
+        if self.config.get_value('stageUncommittedValues', False) or \
+                self.config.get_value('stageUnpushedEntries', False):
+            # If so, initialise the storage
+            self.storage = self.get_storage()
+
+        # Check if value staging is used
         if self.config.get_value('stageUncommittedValues', False):
+            # Restore previously staged values
+            self._restore_values()
             # Register destructor, to make sure uncommitted values won't be lost
             atexit.register(self.stage_values)
-            self._restore_values()
 
+        # Check if entry staging is used
         if self.config.get_value('stageUnpushedEntries', False):
+            # Restore previously staged entries
+            self._restore_entries()
             # Register destructor, to make sure unpushed entries won't be lost
             atexit.register(self.stage_entries)
-            self._restore_entries()
+
+    def get_storage(self):
+        """
+        Initialises and returns the storage handler used for the API.
+        The storage is used to stage uncommitted values and unpushed
+        entries in case of an exception or failure.
+
+        :return: A storage object used for the API.
+        :rtype: shelve.DbfilenameShelf
+        """
+        # Get the path to the storage
+        path = self.config.get_value('storagePath', "")
+        # Get the name of the file
+        name = self.config.get_value('storageName', "iot_storage.db")
+        # Bind the path and name together properly
+        storage = shelve.open(os.path.join(path, name))
+
+        # Check if there's a previous storage or if it's brand new.
+        if not storage.has_key("version") or storage.get("version", "") == "":
+            # The storage is new, we need to set up some things
+            # Set the version to the current so it won't initialise on next run
+            storage['version'] = self.__STORAGE_VERSION
+            # Set the value and entry lists empty
+            storage['values'] = []
+            storage['entries'] = []
+
+        return storage
 
     def stage_values(self):
-        # TODO: Implement catch to store uncommitted values
-        raise NotImplementedError
-        pass
+        new_values = []
+        for val in self.values:  # type: Value
+            new_values.append(val.to_object_storage())
+        self.storage['values'] = new_values
+        self.values = []
+        print self.storage['values']
 
     def stage_entries(self):
-        # TODO: Implement catch to store unpushed entries
-        raise NotImplementedError
-        pass
+        new_entries = []
+        for entry in self.entries:  # type: Entry
+            new_entries.append(entry.to_object_storage())
+        self.storage['entries'] = new_entries
+        self.entries = []
 
     def _restore_values(self):
-        # TODO: Implement function to restore uncommitted values
-        raise NotImplementedError
-        pass
+        for val in self.storage.get('values', []):
+            self.values.append(Value.from_json_storage(val))
+        self.storage['values'] = []
 
     def _restore_entries(self):
-        # TODO: Implement function to restore unpushed entries
-        raise NotImplementedError
-        pass
+        for val in self.storage.get('entries', []):
+            self.entries.append(Entry.from_json_storage(val))
+        self.storage['entries'] = []
 
 
 # class Api(_StorageApi):  # Bypass the storage api for now since no function is ready.

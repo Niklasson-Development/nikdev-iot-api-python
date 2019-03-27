@@ -72,6 +72,10 @@ class Value:
             value=value
         )
 
+    @classmethod
+    def from_json_storage(cls, json_data):
+        return cls.from_json_upstream(json_data)
+
     def to_object_downstream(self):
         """
         Converts the object to an object that represents what the server responds with.
@@ -96,6 +100,9 @@ class Value:
         return {
             self.field_id: self.value
         }
+
+    def to_object_storage(self):
+        return self.to_object_upstream()
 
     def __eq__(self, other):
         if isinstance(other, Value):

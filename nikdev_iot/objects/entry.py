@@ -8,6 +8,8 @@ class Entry:
 
     values = []
     """
+    List of all stored values for the given entry.
+
     :type: list[Value]
     """
 
@@ -15,7 +17,7 @@ class Entry:
     """
     Store the timestamp when the values was set.
     Only for read, will not sent on upload or converted with to_object function.
-    
+
     :type: int
     """
 
@@ -47,10 +49,30 @@ class Entry:
         Converts the object to a dict that can be sent to the server.
 
         :return:    A represented dict to store on server.
-        :rtype:     dict[int, list[Value]]
         """
         # Serialize all the values before returning the entry.
         _values = []
         for value in self.values:
             _values.append(value.to_object_upstream())
         return {'timestamp': self.timestamp, 'values': _values}
+
+    def to_object_storage(self):
+        return self.to_object_upstream()
+
+    @classmethod
+    def from_json_upstream(cls, json_data):
+        # Extract the timestamp
+        _timestamp = json_data['timestamp']
+        # Extract the values
+        _values = []
+        for value in json_data['values']:  # type: dict
+            _values.append(Value.from_json_upstream(value))
+
+        return cls(
+            timestamp=_timestamp,
+            values=_values
+        )
+
+    @classmethod
+    def from_json_storage(cls, json_data):
+        return cls.from_json_upstream(json_data)
