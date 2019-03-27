@@ -2,7 +2,7 @@
 
 **Python API for accessing the NikDev IoT Server**
 
-This package is serving as an API client for accessing the [NikDev IoT Server](https://iot.nik-dev.se/admin/),
+This package is serving as an API client for accessing the [NikDev IoT Server](https://iot.nik-dev.se/admin/login),
 and simplify uploading data to the server.
 
 ## Installation
