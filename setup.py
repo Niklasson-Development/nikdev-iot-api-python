@@ -3,7 +3,7 @@
 from setuptools import setup
 
 setup(name='nikdev_iot',
-      version='0.2',
+      version='0.3',
       description='Python API for NikDev IoT server.',
       url='https://github.com/Niklasson-Development/nikdev_iot_python',
       author='Johan Niklasson',
