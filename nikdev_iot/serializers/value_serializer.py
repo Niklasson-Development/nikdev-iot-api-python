@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from objects import Value
+from nikdev_iot.objects import Value
 import time
 
 
