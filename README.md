@@ -1,8 +1,8 @@
-# NikDev IoT (Python)
+# NikDev IoT Client (Python)
 
 **Python API for accessing the NikDev IoT Server**
 
-This package is an API for accessing the NikDev IoT Server,
+This package is serving as an API client for accessing the [NikDev IoT Server](https://iot.nik-dev.se/admin/),
 and simplify uploading data to the server.
 
 ## Installation
@@ -34,10 +34,11 @@ under the same device. If you don't have an API Key you can create one.
 ### Importing and initializing
 To import the API, use the following:
 ```python
-from nikdev_iot import Api, PushException
+from nikdev_iot import Api, PushException, GetException
 ```
 
-The `PushException` can be good to import to catch eventual errors in pushing data.
+The `PushException` and `GetException` can be good to import to catch eventual 
+errors when sending or receiving data.
 
 To initialize the API class, there's 2 options. Either you can
 pass a dict with configuration values, or you can create it from
