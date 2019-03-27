@@ -9,7 +9,7 @@ from nikdev_iot.config import Config
 from nikdev_iot.network.network import NetworkStatus
 from nikdev_iot.objects import Value, Entry, Batch
 from nikdev_iot.network import Network
-from serializers import ValueSerializer
+from nikdev_iot.serializers import ValueSerializer
 
 from .exceptions import PushException, GetException
 
