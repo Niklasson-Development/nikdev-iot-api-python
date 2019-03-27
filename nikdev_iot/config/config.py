@@ -24,10 +24,10 @@ class Config:
     Dict with default configuration values.
     """
 
-    def __init__(self, config_custom=None):
+    def __init__(self, config=None):
         # If the custom path is set, read it
-        if config_custom is not None:
-            self._config_custom = config_custom
+        if config is not None:
+            self._config_custom = config
         else:
             self._config_custom = {}
 
