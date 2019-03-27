@@ -59,7 +59,7 @@ class Value:
         :type json_data: dict
         """
         # Fetch the key and extract the values
-        field_id = json_data.keys()[0]
+        field_id = list(json_data.keys())[0]
         values = json_data[field_id]
         # Calls the main constructor and provides extracted values.
         return cls(

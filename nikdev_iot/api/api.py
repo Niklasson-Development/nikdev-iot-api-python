@@ -237,11 +237,16 @@ class _StorageApi(_DownstreamApi):
         path = self.config.get_value('storagePath', "")
         # Get the name of the file
         name = self.config.get_value('storageName', "iot_storage.db")
-        # Bind the path and name together properly
-        storage = shelve.open(os.path.join(path, name))
+        try:
+            # Bind the path and name together properly
+            storage = shelve.open(os.path.join(path, name))
+        except:
+            # If we failed, it was probably due to some error between already created
+            # file i Python 2.7 or 3.x
+            storage = shelve.open(os.path.join(path, "_" + name))
 
         # Check if there's a previous storage or if it's brand new.
-        if not storage.has_key("version") or storage.get("version", "") == "":
+        if "version" not in storage or storage.get("version", "") == "":
             # The storage is new, we need to set up some things
             # Set the version to the current so it won't initialise on next run
             storage['version'] = self.__STORAGE_VERSION

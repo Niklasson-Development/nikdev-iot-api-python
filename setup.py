@@ -13,5 +13,5 @@ setup(name='nikdev_iot',
       install_requires=[
           'requests>=2.19,<3',
       ],
-      python_requires='<3',
+      python_requires='>=2.7, <4',
       zip_safe=False)
