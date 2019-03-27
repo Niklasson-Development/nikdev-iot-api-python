@@ -9,8 +9,9 @@ from nikdev_iot.config import Config
 from nikdev_iot.network.network import NetworkStatus
 from nikdev_iot.objects import Value, Entry, Batch
 from nikdev_iot.network import Network
+from serializers import ValueSerializer
 
-from .push_exception import PushException
+from .exceptions import PushException, GetException
 
 
 class _BaseApi(object):
@@ -126,12 +127,12 @@ class _UpstreamApi(_BaseApi):
         if status == NetworkStatus.SUCCESS:
             self.reset_unpushed_entries()
         elif status == NetworkStatus.BAD_REQUEST:
-            self.reset_unpushed_entries()
+            # self.reset_unpushed_entries()
             try:
                 error_message = response.json()['message']
             except ValueError:
                 error_message = str(response.status_code)
-            raise PushException('Bad request: ' + error_message, False)
+            raise PushException('Bad request: ' + error_message, True)
         elif status == NetworkStatus.BAD_LUCK:
             raise PushException('Bad luck: client timeout or unexpected server error.', True)
 
@@ -160,7 +161,27 @@ class _UpstreamApi(_BaseApi):
 class _DownstreamApi(_UpstreamApi):
 
     def get(self, field_ids=None):
-        raise NotImplementedError
+        # Make sure the field ids are a list
+        if not type(field_ids) == list:
+            field_ids = [field_ids]
+
+        # Merge the field ids into a string with commas
+        value_str = ','.join(field_ids)
+
+        status, response = self.network.get(
+            url=self.config.get_value('baseUrl') + 'values/' + value_str,
+        )
+
+        if status == NetworkStatus.SUCCESS:
+            return ValueSerializer.serialize_from_server(response.json()['data'])
+        elif status == NetworkStatus.BAD_REQUEST:
+            try:
+                error_message = response.json()['message']
+            except ValueError:
+                error_message = str(response.status_code)
+            raise GetException('Bad request: ' + error_message)
+        elif status == NetworkStatus.BAD_LUCK:
+            raise GetException('Bad luck: client timeout or unexpected server error.')
 
 
 class _StorageApi(_DownstreamApi):
@@ -236,7 +257,6 @@ class _StorageApi(_DownstreamApi):
             new_values.append(val.to_object_storage())
         self.storage['values'] = new_values
         self.values = []
-        print self.storage['values']
 
     def stage_entries(self):
         new_entries = []

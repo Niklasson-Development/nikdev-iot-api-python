@@ -66,7 +66,6 @@ class Network:
         Fetches data from the server with applied headers and configurations.
 
         :param url:     The url to get from.
-        :param json:    The data to provide to the server.
         :return:        A tuple existing of an int and the response object. The int is an enum of the
                         NetworkStatus class to simplify whether or not to stage the data after failure.
         :rtype: (int, requests.Response)

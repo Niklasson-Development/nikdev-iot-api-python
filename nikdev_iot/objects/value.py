@@ -37,6 +37,19 @@ class Value:
         self.value = value
         self.timestamp = timestamp
 
+    def adjust_timestamp(self, offset):
+        """
+        Adjusts the timestamp to a given offset.
+
+        :param offset: The offset to add to the timestamp
+        :type offset: int
+        :return: None
+        """
+        # Make sure the timestamp exists
+        if self.timestamp is not None:
+            # Make sure to round the value before adding it to the timestamp
+            self.timestamp += int(round(offset))
+
     @classmethod
     def from_json_downstream(cls, json_data):
         """

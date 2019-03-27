@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
 
 
+class GetException(Exception):
+
+    def __init__(self, message):
+        super(GetException, self).__init__(message)
+
+
 class PushException(Exception):
 
     retained_data = None
