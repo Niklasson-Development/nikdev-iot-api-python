@@ -6,7 +6,15 @@ This package is an API for accessing the NikDev IoT Server,
 and simplify uploading data to the server.
 
 ## Installation
-> Not implemented yet.
+
+Using pip:
+
+    pip install nikdev-iot
+
+From source:
+
+    python setup.py install
+
 
 ## Using the API
 
