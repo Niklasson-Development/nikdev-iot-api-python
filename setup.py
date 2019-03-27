@@ -10,7 +10,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(name='nikdev_iot',
-      version='0.5.3rc1',
+      version='0.5.4',
       description='Python API for NikDev IoT server.',
       long_description=long_description,
       long_description_content_type='text/markdown',
