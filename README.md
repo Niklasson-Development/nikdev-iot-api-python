@@ -152,18 +152,21 @@ api.add_value('<Field ID 1>', '<Another Value>')
 # Commit that value as well
 api.commit()
 
-try:
-    # Try to push the values to the server
-    api.push()
-except PushException as exception:
-    # Check if the data was retained
-    if exception.retained_data:
-        # If so, sleep for a while and try to push it again.
-        import time; time.sleep(2)
-        # This time it's without try catch, if we fail here the program crashes.
+# We'll try to push the data 3 times
+for _ in range(0, 3):
+    try:
+        # Try to push the values to the server
         api.push()
-    pass
-
+        # If we reach the next line, we can safely exit the loop
+        break
+    except PushException as exception:
+        # Check if the data was retained
+        if exception.retained_data:
+            # If so, sleep for a while and try to push it again.
+            import time; time.sleep(2)
+        else:
+            # Otherwise we exit the loop as we won't be able to push it again
+            break
 ```
 
 ### Fetching data
